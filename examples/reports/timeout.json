@@ -1,0 +1,83 @@
+{
+  "devices": [
+    {
+      "checks": [
+        {
+          "detail": "Device is visible in the OS inventory.",
+          "evidence": {
+            "pnp_status": "OK"
+          },
+          "name": "pnp_status",
+          "recommendation": null,
+          "status": "pass"
+        },
+        {
+          "detail": "Driver metadata is sufficient for a controlled serial probe.",
+          "evidence": {},
+          "name": "driver",
+          "recommendation": null,
+          "status": "pass"
+        },
+        {
+          "detail": "VID/PID and description are available.",
+          "evidence": {
+            "pid": "0003",
+            "vid": "1209"
+          },
+          "name": "identity",
+          "recommendation": null,
+          "status": "pass"
+        },
+        {
+          "detail": "Port opened with baudrate 115200.",
+          "evidence": {
+            "timeout": 1.0
+          },
+          "name": "open_port",
+          "recommendation": null,
+          "status": "pass"
+        },
+        {
+          "detail": "Probe timed out without a response.",
+          "evidence": {
+            "timeout": 1.0
+          },
+          "name": "communication",
+          "recommendation": "Check baudrate, parity, firmware prompt state and whether the device expects a different command.",
+          "status": "warn"
+        }
+      ],
+      "device": {
+        "description": "Synthetic Slow Device",
+        "hwid": "USB VID:PID=1209:0003",
+        "location": null,
+        "manufacturer": "Example Devices",
+        "pid": "0003",
+        "pnp_status": "OK",
+        "port": "COM9",
+        "serial_number": null,
+        "source": "simulation",
+        "vid": "1209"
+      },
+      "errors": [],
+      "generated_at": "2026-08-13T21:32:20.611925+00:00",
+      "overall_status": "warn",
+      "recommendations": [
+        "Check baudrate, parity, firmware prompt state and whether the device expects a different command."
+      ],
+      "scenario": "timeout",
+      "settings": {
+        "baudrate": 115200,
+        "bytesize": 8,
+        "parity": "N",
+        "probe_payload": "PING",
+        "stopbits": 1,
+        "timeout_seconds": 1.0
+      },
+      "warnings": [
+        "Probe timed out without a response."
+      ]
+    }
+  ],
+  "report_count": 1
+}
