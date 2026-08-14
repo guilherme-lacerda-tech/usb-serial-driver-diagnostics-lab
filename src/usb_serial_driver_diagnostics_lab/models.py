@@ -22,6 +22,12 @@ class SerialSettings:
     timeout_seconds: float = 1.0
     probe_payload: str = "PING"
 
+    def __post_init__(self) -> None:
+        if self.baudrate <= 0 or self.baudrate > 4_000_000:
+            raise ValueError("baudrate must be between 1 and 4000000")
+        if self.timeout_seconds <= 0:
+            raise ValueError("timeout_seconds must be positive")
+
 
 @dataclass(frozen=True)
 class DeviceIdentity:

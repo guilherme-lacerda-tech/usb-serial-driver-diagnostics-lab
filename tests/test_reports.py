@@ -37,3 +37,14 @@ def test_reports_to_dict_includes_overall_status() -> None:
     assert device["overall_status"] == "fail"
     assert device["errors"]
 
+
+def test_report_generation_surfaces_file_errors(tmp_path) -> None:
+    directory = tmp_path / "as-directory"
+    directory.mkdir()
+    try:
+        write_json_report([run_simulation("healthy")], directory)
+    except OSError as exc:
+        assert exc
+    else:
+        raise AssertionError("expected writing a report to a directory path to fail")
+

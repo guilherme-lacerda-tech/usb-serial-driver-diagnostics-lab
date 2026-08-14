@@ -1,6 +1,13 @@
 # USB Serial Driver Diagnostics Lab
 
+[![CI](https://github.com/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab/actions/workflows/ci.yml)
+[![Security](https://github.com/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab/actions/workflows/security.yml/badge.svg)](https://github.com/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab/actions/workflows/security.yml)
+[![Release](https://img.shields.io/github/v/release/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab)](https://github.com/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab/releases)
+[![License](https://img.shields.io/github/license/guilherme-lacerda-tech/usb-serial-driver-diagnostics-lab)](LICENSE)
+
 Windows-focused USB serial diagnostics lab with a professional Python CLI, controlled port probing, simulation mode and structured JSON/HTML reporting.
+
+Portuguese documentation: [README.pt-BR.md](README.pt-BR.md) and [docs/hardware-validation.md](docs/hardware-validation.md).
 
 ## Why
 
@@ -106,6 +113,11 @@ This repository uses synthetic data only. It must not contain real customer devi
 - Hardware validation is pending.
 - The live communication probe cannot infer proprietary protocols.
 - Windows PnP enrichment runs only when PowerShell and CIM are available.
+
+## Related Projects
+
+- [iot-serial-diagnostics-tool](https://github.com/guilherme-lacerda-tech/iot-serial-diagnostics-tool): related general serial diagnostics project.
+- This repository is the deeper Windows USB/driver/COM troubleshooting lab.
 
 ## Roadmap
 

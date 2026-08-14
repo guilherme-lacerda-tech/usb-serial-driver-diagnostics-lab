@@ -12,7 +12,7 @@ from usb_serial_driver_diagnostics_lab.diagnostics import (
     run_simulation,
     summarize_reports,
 )
-from usb_serial_driver_diagnostics_lab.models import CheckStatus, DeviceIdentity
+from usb_serial_driver_diagnostics_lab.models import CheckStatus, DeviceIdentity, SerialSettings
 
 
 def test_error_classifier_detects_busy_port() -> None:
@@ -26,6 +26,13 @@ def test_error_classifier_detects_timeout() -> None:
     status, detail, _recommendation = classify_open_error("operation timeout")
     assert status == CheckStatus.WARN
     assert "timed out" in detail
+
+
+def test_error_classifier_detects_disconnected_device() -> None:
+    status, detail, recommendation = classify_open_error("could not open port COM9: cannot find the file specified")
+    assert status == CheckStatus.FAIL
+    assert "no longer exists" in detail
+    assert "Reconnect" in recommendation
 
 
 def test_identity_from_pyserial_port_parses_vid_pid() -> None:
@@ -116,3 +123,11 @@ def test_live_probe_open_error(monkeypatch) -> None:
     report = run_live_probe(device)
     assert report.overall_status == CheckStatus.FAIL
     assert any("busy" in error.lower() for error in report.errors)
+
+
+def test_serial_settings_reject_unsupported_baudrate() -> None:
+    with pytest.raises(ValueError, match="baudrate"):
+        SerialSettings(baudrate=0)
+
+    with pytest.raises(ValueError, match="baudrate"):
+        SerialSettings(baudrate=5_000_000)
