@@ -2,6 +2,7 @@ import json
 
 from usb_serial_driver_diagnostics_lab.diagnostics import run_simulation
 from usb_serial_driver_diagnostics_lab.reports import (
+    compare_report_payloads,
     render_html_report,
     reports_to_dict,
     write_html_report,
@@ -47,4 +48,29 @@ def test_report_generation_surfaces_file_errors(tmp_path) -> None:
         assert exc
     else:
         raise AssertionError("expected writing a report to a directory path to fail")
+
+
+def test_compare_report_payloads_tracks_failures_and_recovery() -> None:
+    previous = {
+        "devices": [
+            {"device": {"port": "COM1"}, "overall_status": "fail"},
+            {"device": {"port": "COM2"}, "overall_status": "pass"},
+        ]
+    }
+    current = {
+        "devices": [
+            {"device": {"port": "COM1"}, "overall_status": "pass"},
+            {"device": {"port": "COM3"}, "overall_status": "fail"},
+        ]
+    }
+
+    assert compare_report_payloads(previous, current) == {
+        "previous_devices": 2,
+        "current_devices": 2,
+        "new_ports": ["COM3"],
+        "missing_ports": ["COM2"],
+        "new_failures": ["COM3"],
+        "recovered_ports": ["COM1"],
+        "unchanged_failures": [],
+    }
 

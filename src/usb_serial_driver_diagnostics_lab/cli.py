@@ -11,7 +11,13 @@ from usb_serial_driver_diagnostics_lab.diagnostics import (
     summarize_reports,
 )
 from usb_serial_driver_diagnostics_lab.models import SerialSettings
-from usb_serial_driver_diagnostics_lab.reports import reports_to_dict, write_html_report, write_json_report
+from usb_serial_driver_diagnostics_lab.reports import (
+    compare_report_payloads,
+    load_json_report,
+    reports_to_dict,
+    write_html_report,
+    write_json_report,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -32,6 +38,11 @@ def build_parser() -> argparse.ArgumentParser:
     scan = subparsers.add_parser("scan", help="Discover and probe local serial ports.")
     add_common_probe_args(scan)
     scan.set_defaults(func=handle_scan)
+
+    compare = subparsers.add_parser("compare-reports", help="Compare two JSON diagnostic reports.")
+    compare.add_argument("previous", type=Path)
+    compare.add_argument("current", type=Path)
+    compare.set_defaults(func=handle_compare_reports)
     return parser
 
 
@@ -81,6 +92,12 @@ def handle_scan(args: argparse.Namespace) -> int:
     reports = run_live_scan(settings_from_args(args))
     persist_outputs(reports, args)
     print_summary(reports)
+    return 0
+
+
+def handle_compare_reports(args: argparse.Namespace) -> int:
+    comparison = compare_report_payloads(load_json_report(args.previous), load_json_report(args.current))
+    print(json.dumps(comparison, indent=2, sort_keys=True))
     return 0
 
 

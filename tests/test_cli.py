@@ -42,3 +42,20 @@ def test_cli_scan_uses_live_scan_handler(monkeypatch, capsys) -> None:
     printed = json.loads(capsys.readouterr().out)
     assert printed["devices"][0]["settings"]["baudrate"] == 57600
 
+
+def test_cli_compare_reports(tmp_path, capsys) -> None:
+    previous = tmp_path / "previous.json"
+    current = tmp_path / "current.json"
+    previous.write_text(
+        json.dumps({"devices": [{"device": {"port": "COM1"}, "overall_status": "fail"}]}),
+        encoding="utf-8",
+    )
+    current.write_text(
+        json.dumps({"devices": [{"device": {"port": "COM1"}, "overall_status": "pass"}]}),
+        encoding="utf-8",
+    )
+
+    assert cli.main(["compare-reports", str(previous), str(current)]) == 0
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["recovered_ports"] == ["COM1"]
+

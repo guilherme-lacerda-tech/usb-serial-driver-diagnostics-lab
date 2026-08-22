@@ -23,6 +23,7 @@ USB serial failures are often blamed on "the COM port" when the real issue is dr
 - Mandatory hardware-free simulation mode.
 - Synthetic scenarios for healthy device, missing driver, busy port, timeout, disconnected device, unknown VID/PID and communication failure.
 - JSON and HTML report generation with checks, warnings, errors and recommendations.
+- Historical JSON report comparison for recovered ports, new failures and missing ports.
 
 ## Architecture
 
@@ -69,6 +70,7 @@ Simulation mode is the primary public demo path and works without hardware:
 usb-serial-diagnostics simulate --scenario port_busy
 usb-serial-diagnostics simulate --scenario driver_missing
 usb-serial-diagnostics simulate --scenario timeout
+usb-serial-diagnostics compare-reports reports/yesterday.json reports/today.json
 ```
 
 All example devices, VID/PID pairs and serial identifiers are synthetic.
